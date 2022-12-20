@@ -1,0 +1,59 @@
+# .NET Desktop
+# Build and run tests for .NET Desktop or Windows classic desktop solutions.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
+
+trigger:
+- main
+
+pool:
+  vmImage: 'Windows-latest'
+  #name: PECOE-self-hosted
+  #demands:
+    #- Agent.OS -equals Windows_NT
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+
+- powershell: |
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls -bor [Net.SecurityProtocolType]::Tls11 -bor [Net.SecurityProtocolType]::Tls12
+    Invoke-WebRequest -Uri https://github.com/github/codeql-action/releases/latest/download/codeql-bundle-win64.tar.gz -OutFile $(System.DefaultWorkingDirectory)/codeql-bundle-win64.tar.gz
+    tar -xvzf $(System.DefaultWorkingDirectory)/codeql-bundle-win64.tar.gz
+  displayName: 'Download Codeql CLI package'
+
+- task: CmdLine@2
+  displayName: CodeQL Initialization
+  inputs:
+    script: |
+      mkdir $(System.DefaultWorkingDirectory)\codeql\codeql-dbs
+      $(System.DefaultWorkingDirectory)\codeql\codeql database init --language csharp --trace-process-name Agent.Worker.exe --source-root . --begin-tracing $(System.DefaultWorkingDirectory)/codeql/codeql-dbs/sec-poc-demo-csharp-repo
+      echo "build source directory"
+      echo $(Build.SourceDirectory)
+
+- task: PowerShell@2
+  displayName: Set CodeQL Environment Variables
+  inputs:
+   targetType: inline
+   script: |
+          $json = Get-Content $(System.DefaultWorkingDirectory)/codeql/codeql-dbs/sec-poc-demo-csharp-repo/temp/tracingEnvironment/start-tracing.json | ConvertFrom-Json
+          $json.PSObject.Properties | ForEach-Object {
+              $template = "##vso[task.setvariable variable="
+              $template += $_.Name
+              $template += "]"
+              $template += $_.Value
+              echo "$template"
+          }
+
+# Execute a clean build using the VSBuild task.
+- task: VSBuild@1
+  inputs:
+      solution: '**/*.sln'
+      msbuildArgs: '/p:OutDir=$(Build.ArtifactStagingDirectory) /p:UseSharedCompilation=false'
+      platform: Any CPU
+      configuration: Release
+      clean: True
+  displayName: Visual Studio Build
