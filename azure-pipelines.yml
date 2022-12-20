@@ -76,7 +76,7 @@ steps:
   inputs:
       targetType: inline
       script: |
-         $json = Get-Content $(System.DefaultWorkingDirectory)/db/temp/tracingEnvironment/end-tracing.json | ConvertFrom-Json
+         $json = Get-Content $(System.DefaultWorkingDirectory)/codeql/codeql-dbs/sec-poc-demo-csharp-repo/temp/tracingEnvironment/end-tracing.json | ConvertFrom-Json
          $json.PSObject.Properties | ForEach-Object {
              $template = "##vso[task.setvariable variable="
              $template += $_.Name
