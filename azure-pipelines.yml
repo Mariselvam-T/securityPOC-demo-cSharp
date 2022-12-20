@@ -95,7 +95,7 @@ steps:
 - task: CmdLine@2
   displayName: Analyze CodeQL database
   inputs:
-      script: $(System.DefaultWorkingDirectory)\codeql\codeql database analyze $(System.DefaultWorkingDirectory)/codeql/codeql-dbs/sec-poc-demo-csharp-repo csharp-code-scanning.qls --sarif-category=csharp --format=sarif-latest --output=$(Agent.TempDirectory)/sec-poc-demo-csharp-repo.sarif'
+      script: $(System.DefaultWorkingDirectory)\codeql\codeql database analyze $(System.DefaultWorkingDirectory)/codeql/codeql-dbs/sec-poc-demo-csharp-repo csharp-code-scanning.qls --sarif-category=csharp --format=sarif-latest --output=$(Agent.TempDirectory)/sec-poc-demo-csharp-repo.sarif
 
 - task: CmdLine@2
   displayName: Upload CodeQL results
