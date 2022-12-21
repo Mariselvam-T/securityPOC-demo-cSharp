@@ -102,4 +102,4 @@ steps:
   inputs:
       script: echo "$TOKEN" | $(System.DefaultWorkingDirectory)\codeql\codeql github upload-results --repository=Mariselvam-T/securityPOC-demo-csharp --ref=refs/heads/master --sarif=$(Agent.TempDirectory)/sec-poc-demo-csharp-repo.sarif --github-auth-stdin
   env:
-    token: $(gh.token)
+        token: "%GH_TOKEN%"
