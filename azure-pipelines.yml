@@ -7,10 +7,11 @@ trigger:
 - main
 
 pool:
-  vmImage: 'Windows-latest'
+  #vmImage: 'Windows-latest'
   #name: PECOE-self-hosted
-  #demands:
-    #- Agent.OS -equals Windows_NT
+  name: Default
+  demands:
+    - Agent.OS -equals Windows_NT
 
 variables:
   solution: '**/*.sln'
