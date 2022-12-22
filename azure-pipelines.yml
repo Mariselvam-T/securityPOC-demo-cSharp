@@ -11,7 +11,9 @@ pool:
   #name: PECOE-self-hosted
   name: Default
   demands:
+    - Agent.Name -equals LAPTOP-IG9UCR4N
     - Agent.OS -equals Windows_NT
+    - Agent.Version -equals 2.213.2
 
 variables:
   solution: '**/*.sln'
