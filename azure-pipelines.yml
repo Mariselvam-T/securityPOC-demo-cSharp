@@ -37,12 +37,17 @@ steps:
 #       mkdir $(System.DefaultWorkingDirectory)\codeql\codeql-dbs
 #       $(System.DefaultWorkingDirectory)\codeql\codeql database init --language csharp --trace-process-name Agent.Worker.exe --source-root . --begin-tracing $(System.DefaultWorkingDirectory)/codeql/codeql-dbs/sec-poc-demo-csharp-repo
 
+- task: CmdLine@2
+  displayName: CodeQL Pre-Initialization
+  inputs:
+    script: |
+      mkdir $(System.DefaultWorkingDirectory)\codeql\codeql-dbs
+
 - task: PowerShell@2
   displayName: CodeQL Initialization
   inputs:
     targetType: inline
     script: |
-      New-Item -Path $(System.DefaultWorkingDirectory)/codeql/codeql-dbs -ItemType Directory
       $(System.DefaultWorkingDirectory)/codeql/codeql database init --language csharp --trace-process-name Agent.Worker.exe --source-root . --begin-tracing $(System.DefaultWorkingDirectory)/codeql/codeql-dbs/sec-poc-demo-csharp-repo
 
 
