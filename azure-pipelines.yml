@@ -30,17 +30,13 @@ steps:
     tar -xvzf $(System.DefaultWorkingDirectory)/codeql-bundle-win64.tar.gz
   displayName: 'Download Codeql CLI package'
 
-# - task: CmdLine@2
-#   displayName: CodeQL Initialization
-#   inputs:
-#     script: |
-#       mkdir $(System.DefaultWorkingDirectory)\codeql\codeql-dbs
-#       $(System.DefaultWorkingDirectory)\codeql\codeql database init --language csharp --trace-process-name Agent.Worker.exe --source-root . --begin-tracing $(System.DefaultWorkingDirectory)/codeql/codeql-dbs/sec-poc-demo-csharp-repo
-
-- script: |
-    mkdir $(System.DefaultWorkingDirectory)/codeql/codeql-dbs
-    $(System.DefaultWorkingDirectory)/codeql/codeql database init --language csharp --trace-process-name Agent.Worker.exe --source-root . --begin-tracing $(System.DefaultWorkingDirectory)/codeql/codeql-dbs/sec-poc-demo-csharp-repo
+- task: CmdLine@2
   displayName: CodeQL Initialization
+  inputs:
+    script: |
+      mkdir $(System.DefaultWorkingDirectory)\codeql\codeql-dbs
+      $(System.DefaultWorkingDirectory)\codeql\codeql database init --language csharp --trace-process-name Agent.Worker.exe --source-root . --begin-tracing $(System.DefaultWorkingDirectory)/codeql/codeql-dbs/sec-poc-demo-csharp-repo
+
 - task: PowerShell@2
   displayName: Set CodeQL Environment Variables
   inputs:
