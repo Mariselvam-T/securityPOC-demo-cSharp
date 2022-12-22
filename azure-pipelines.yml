@@ -40,6 +40,7 @@ steps:
 - task: PowerShell@2
   displayName: CodeQL Initialization
   inputs:
+    targetType: inline
     script: |
       mkdir $(System.DefaultWorkingDirectory)\codeql\codeql-dbs
       $(System.DefaultWorkingDirectory)\codeql\codeql database init --language csharp --trace-process-name Agent.Worker.exe --source-root . --begin-tracing $(System.DefaultWorkingDirectory)/codeql/codeql-dbs/sec-poc-demo-csharp-repo
