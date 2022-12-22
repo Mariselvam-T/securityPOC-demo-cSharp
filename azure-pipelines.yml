@@ -39,8 +39,7 @@ steps:
 
 - script: |
     mkdir $(System.DefaultWorkingDirectory)/codeql/codeql-dbs
-    # $(System.DefaultWorkingDirectory)/codeql/codeql database init --language csharp --trace-process-name Agent.Worker.exe --source-root . --begin-tracing $(System.DefaultWorkingDirectory)/codeql/codeql-dbs/sec-poc-demo-csharp-repo
-    $(Agent.BuildDirectory)/s/codeql/codeql database init --language csharp --trace-process-name Agent.Worker.exe --source-root . --begin-tracing $(Agent.BuildDirectory)/s/codeql/codeql-dbs/sec-poc-demo-csharp-repo
+    $(System.DefaultWorkingDirectory)/codeql/codeql database init --language csharp --trace-process-name Agent.Worker.exe --source-root . --begin-tracing $(System.DefaultWorkingDirectory)/codeql/codeql-dbs/sec-poc-demo-csharp-repo
   displayName: CodeQL Initialization
 - task: PowerShell@2
   displayName: Set CodeQL Environment Variables
