@@ -10,11 +10,11 @@ pool:
   #vmImage: 'Windows-latest'
   name: PECOE-self-hosted
   demands:
-    - Agent.Name -equals PWA-W01VUGEN07
-    #AAMEAD1CUWDA02
+    - Agent.Name -equals AAMEAD1CUWDA02
+    #AAMEAD1CUWDA02 , PWA-W01VUGEN07
   # name: Default
   # demands:
-  #   - Agent.Name -equals LAPTOP-IG9UCR4N
+  #   - Agent.Name -equals 
   #   - Agent.OS -equals Windows_NT
   #   - Agent.Version -equals 2.213.2
 
@@ -31,21 +31,12 @@ steps:
     tar -xvzf $(System.DefaultWorkingDirectory)/codeql-bundle-win64.tar.gz
   displayName: 'Download Codeql CLI package'
 
-- script:  |
-    mkdir $(System.DefaultWorkingDirectory)\codeql\codeql-dbs
-  displayName: 'codeql-dbs directory created'
-
-# - task: CmdLine@2
-#   displayName: CodeQL Initialization
-#   inputs:
-#     script: |
-#       mkdir $(System.DefaultWorkingDirectory)\codeql\codeql-dbs
-#       $(System.DefaultWorkingDirectory)\codeql\codeql database init --language csharp --trace-process-name Agent.Worker.exe --source-root . --begin-tracing $(System.DefaultWorkingDirectory)/codeql/codeql-dbs/sec-poc-demo-csharp-repo
-
-
-- powershell: |
-      $(System.DefaultWorkingDirectory)\codeql\codeql database init --language csharp --trace-process-name Agent.Worker.exe --source-root . --begin-tracing $(System.DefaultWorkingDirectory)/codeql/codeql-dbs/sec-poc-demo-csharp-repo
+- task: CmdLine@2
   displayName: CodeQL Initialization
+  inputs:
+    script: |
+      mkdir $(System.DefaultWorkingDirectory)\codeql\codeql-dbs
+      $(System.DefaultWorkingDirectory)\codeql\codeql database init --language csharp --trace-process-name Agent.Worker.exe --source-root . --begin-tracing $(System.DefaultWorkingDirectory)/codeql/codeql-dbs/sec-poc-demo-csharp-repo
 
 - task: PowerShell@2
   displayName: Set CodeQL Environment Variables
