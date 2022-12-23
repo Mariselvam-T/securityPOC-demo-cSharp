@@ -29,8 +29,11 @@ steps:
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls -bor [Net.SecurityProtocolType]::Tls11 -bor [Net.SecurityProtocolType]::Tls12
     Invoke-WebRequest -Uri https://github.com/github/codeql-action/releases/latest/download/codeql-bundle-win64.tar.gz -OutFile $(System.DefaultWorkingDirectory)/codeql-bundle-win64.tar.gz
     tar -xvzf $(System.DefaultWorkingDirectory)/codeql-bundle-win64.tar.gz
-    mkdir $(System.DefaultWorkingDirectory)\codeql\codeql-dbs
   displayName: 'Download Codeql CLI package'
+
+- script:  |
+    mkdir $(System.DefaultWorkingDirectory)\codeql\codeql-dbs
+  displayName: 'codeql-dbs directory created'
 
 # - task: CmdLine@2
 #   displayName: CodeQL Initialization
